@@ -19,9 +19,11 @@ Build using `Cargo build` and the built `.exe` can be used using syntax
 `cli_fileshare.exe <Path_to_file>`
 
 If uploading succeed, the path to the download is copied to clipboard as well as displayed in the output, which can be shared to the recipient.
+> **_NOTE:_**  Allows up to 2GB files to be sent
 
 ## To Be Done
 
 * Pattern matching for file if correct name isn't given or doesn't exist in current directory as well as picking and confirmation of possible matching files.
 * Build same tool in Python, which should allow setting optional subcommands correctly and requires less code.
+* Add more information to `--help`
 
