@@ -6,7 +6,7 @@ Sending files over 15MB in size is often not allowed through many online communi
 
 I found that Rust is not right technology to send multi-part forms due to type safety, as subcommands that the API allows requires boolean or integer values, and the Reqwest multipart module only allows bytes or text to be sent. This is why I am going to do a Python implementation as well to test out. 
 
-## Requirments (to build)
+## Requirements (to build)
 
 * Rust and Cargo
 
