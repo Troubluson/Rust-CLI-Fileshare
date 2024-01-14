@@ -10,10 +10,8 @@ const API_PATH: &str = "https://file.io";
 #[derive(Parser)]
 struct Cli {
     file_path: std::path::PathBuf,
-    #[clap(long, short('d'), action)]
-    no_delete: bool,
-    #[clap(long, short('n'), action)]
-    max_downloads: i32
+    #[clap(long, short('o'), default_value_t=String::new())]
+    output_name: String
 }
 #[derive(Debug, Serialize, Deserialize)]
 struct FileRequest {
@@ -31,7 +29,7 @@ async fn main() -> Result<()> {
     let args = Cli::parse();
     let file_path = args.file_path;
     let file_name = String::from(file_path.file_name().unwrap().to_str().unwrap());
-    let res = post_file(file_path, file_name, args.no_delete, args.max_downloads).await;
+    let res = post_file(file_path, file_name, args.output_name).await;
     match res {
         Ok(()) => {}
         Err(error) => println!("File could not be uploaded\n{}", error.to_string())
@@ -40,12 +38,12 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
-async fn post_file(file_path: std::path::PathBuf, file_name: String, no_delete: bool, max_downloads: i32 ) -> Result<(), Box<dyn std::error::Error>> {
+async fn post_file(file_path: std::path::PathBuf, file_name: String, output_name: String ) -> Result<(), Box<dyn std::error::Error>> {
+    let output_file_name = if !output_name.is_empty() { output_name } else { file_name };
     let bytes = std::fs::read(&file_path)?;
-    println!("{}", (!no_delete).to_string());
-    println!("{}", max_downloads.to_string());
+
     let file_part = reqwest::multipart::Part::bytes(bytes)
-        .file_name(file_name);
+        .file_name(output_file_name);
 
 
     let form = reqwest::multipart::Form::new()
@@ -60,7 +58,6 @@ async fn post_file(file_path: std::path::PathBuf, file_name: String, no_delete: 
         .await?;
     
     let response = result_json.json::<FileResponse>().await?;
-
     
     // Create clipboardContext
     let mut ctx = ClipboardContext::new().unwrap();
