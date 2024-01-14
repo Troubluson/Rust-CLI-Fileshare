@@ -16,7 +16,7 @@ No api-keys or other forms of authentication are required
 
 Build using `Cargo build` and the built `.exe` can be used using syntax
 
-`cli_fileshare.exe <Path_to_file>`
+`cli_fileshare.exe [-o <output_file_name>] <Path_to_file>`
 
 If uploading succeed, the path to the download is copied to clipboard as well as displayed in the output, which can be shared to the recipient.
 > **_NOTE:_**  Allows up to 2GB files to be sent
